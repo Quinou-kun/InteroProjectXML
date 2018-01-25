@@ -1,0 +1,15 @@
+.meteo{
+    font-size : 1.5em;
+    text-align : center;
+    padding : 3vw;
+    vertical-align: middle;
+    width : 30vw;
+    display:inline-block
+}
+
+#mapid{
+    vertical-align: middle;
+    height:95vh;
+    width:60vw;
+    display:inline-block;
+}
