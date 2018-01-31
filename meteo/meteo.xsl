@@ -4,27 +4,27 @@
     <xsl:strip-space elements="previsions"/>
     <xsl:template match="/">
         <DIV class="meteo">
-        <TABLE BORDER="4" style="width : 100%">
-            <CAPTION>
-                <h1>
-                    Meteo
-                </h1>
-            </CAPTION>
-            <TR>
-                <TH></TH>
-                <TH>Temperature</TH>
-                <TH>Humidité de l'air</TH>
-                <TH>Vent</TH>
-                <TH>Temps</TH>
-            </TR>
-            <xsl:apply-templates select="previsions/echeance"/>
-        </TABLE>
+            <TABLE style="width : 100%">
+                <CAPTION>
+                    <h1>
+                        Meteo du jour
+                    </h1>
+                </CAPTION>
+                <TR>
+                    <TH></TH>
+                    <TH>Temperature</TH>
+                    <TH>Humidité de l'air</TH>
+                    <TH>Vent</TH>
+                    <TH>Temps</TH>
+                </TR>
+                <xsl:apply-templates select="previsions/echeance"/>
+            </TABLE>
         </DIV>
     </xsl:template>
 
     <xsl:template match="previsions/echeance">
         <xsl:if test="@hour &gt; 2 and @hour &lt; 25">
-            <TR>
+            <TR id="meteo_body">
                 <TH><xsl:apply-templates select="@timestamp"/></TH>
                 <TD><xsl:apply-templates select="./temperature/level"/></TD>
                 <TD><xsl:apply-templates select="./humidite"/></TD>
@@ -33,7 +33,6 @@
                     <xsl:apply-templates select="./risque_neige"/>
                 </TD>
             </TR>
-
         </xsl:if>
     </xsl:template>
 
@@ -58,9 +57,12 @@
     <xsl:template match="echeance/risque_neige">
         <xsl:choose>
             <xsl:when test=". = 'oui'">
-                <img src="/img/meteo/neige.png" style="width : 40px;"/>
+                <img src="/img/meteo/neige.png" class="meteo_img"/>
             </xsl:when>
             <xsl:otherwise>
+                <xsl:variable name="conseil">
+                <h2>Risque de neige, privilégiez la marche !</h2>
+            </xsl:variable>
                 <xsl:apply-templates select="../pluie"/>
             </xsl:otherwise>
         </xsl:choose>
@@ -69,10 +71,10 @@
 
     <xsl:template match="echeance/pluie">
         <xsl:if test=". &gt; 0.5">
-            <img src="/img/meteo/pluie_moderee.png" style="width : 40px;"/>
+            <img src="/img/meteo/pluie_moderee.png" class="meteo_img"/>
         </xsl:if>
         <xsl:if test=". &gt; 0 and . &lt; 0.5">
-            <img src="/img/meteo/pluie_legere.png" style="width : 40px;"/>
+            <img src="/img/meteo/pluie_legere.png" class="meteo_img"/>
 
         </xsl:if>
         <xsl:if test=". = 0">
@@ -82,13 +84,13 @@
 
     <xsl:template match="echeance/nebulosite/level[@val = 'totale']">
         <xsl:if test=". = 0">
-            <img src="/img/meteo/soleil.png" style="width : 40px;"/>
+            <img src="/img/meteo/soleil.png" class="meteo_img"/>
         </xsl:if>
         <xsl:if test=". &gt; 0 and . &lt; 50">
-            <img src="/img/meteo/parseme.jpeg" style="width : 40px;"/>
+            <img src="/img/meteo/parseme.png" class="meteo_img"/>
         </xsl:if>
         <xsl:if test=". &gt; 51 and . &lt; 101">
-            <img src="/img/meteo/couvert.jpeg" style="width : 40px;"/>
+            <img src="/img/meteo/couvert.png" class="meteo_img"/>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>
