@@ -71,10 +71,10 @@
 
     <xsl:template match="echeance/pluie">
         <xsl:if test=". &gt; 0.5">
-            <img src="../img/meteo/pluie_moderee.png" class="meteo_img"/>
+            <img src="../Interoperabilité/img/meteo/pluie_moderee.png" class="meteo_img"/>
         </xsl:if>
         <xsl:if test=". &gt; 0 and . &lt; 0.5">
-            <img src="../img/meteo/pluie_legere.png" class="meteo_img"/>
+            <img src="../Interoperabilité/img/meteo/pluie_legere.png" class="meteo_img"/>
 
         </xsl:if>
         <xsl:if test=". = 0">
@@ -84,13 +84,13 @@
 
     <xsl:template match="echeance/nebulosite/level[@val = 'totale']">
         <xsl:if test=". = 0">
-            <img src="../img/meteo/soleil.png" class="meteo_img"/>
+            <img src="../Interoperabilité/img/meteo/soleil.png" class="meteo_img"/>
         </xsl:if>
         <xsl:if test=". &gt; 0 and . &lt; 50">
-            <img src="../img/meteo/parseme.png" class="meteo_img"/>
+            <img src="../Interoperabilité/img/meteo/parseme.png" class="meteo_img"/>
         </xsl:if>
         <xsl:if test=". &gt; 51 and . &lt; 101">
-            <img src="../img/meteo/couvert.png" class="meteo_img"/>
+            <img src="../Interoperabilité/img/meteo/couvert.png" class="meteo_img"/>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>
