@@ -1,15 +1,33 @@
 .meteo{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     font-size : 1.5em;
     text-align : center;
-    padding : 3vw;
+    padding : 1vw;
     vertical-align: middle;
-    width : 30vw;
-    display:inline-block
+    width : 35vw;
+    display:inline-block;
+}
+
+th{
+    border : none;
+}
+
+td{
+    border-bottom : 1px solid gainsboro;
+}
+
+.meteo_img{
+    width : 60px;
+}
+
+#meteo_body{
+    border : none;
+    color : black;
 }
 
 #mapid{
     vertical-align: middle;
-    height:95vh;
+    height:98vh;
     width:60vw;
     display:inline-block;
 }
