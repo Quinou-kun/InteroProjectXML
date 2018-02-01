@@ -20,16 +20,22 @@ function get_ip() {
 }
 
 function init(){
-    $geo = file_get_contents('http://ip-api.com/xml/'.get_ip().'?fields=lat,lon');
-    $geoXML = simplexml_load_string($geo);
-    $geoXSL = new DOMDocument();
-    $geoXSL->load('geolocation/geo.xsl');
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($geoXSL);
-    file_put_contents('geolocation/geo.xml',$proc->transformToXML($geoXML));
-    $geoXML = simplexml_load_file('geolocation/geo.xml');
 
-    createMeteo($geoXML->lat,$geoXML->lon);
+    if (!$geo = file_get_contents('http://ip-api.com/xml/'.get_ip().'?fields=lat,lon')) {
+        echo file_get_contents("404.html");
+    } else {
+        $geoXML = simplexml_load_string($geo);
+        $geoXSL = new DOMDocument();
+        $geoXSL->load('geolocation/geo.xsl');
+        $proc = new XSLTProcessor();
+        $proc->importStyleSheet($geoXSL);
+        file_put_contents('geolocation/geo.xml',$proc->transformToXML($geoXML));
+        $geoXML = simplexml_load_file('geolocation/geo.xml');
+
+        createMeteo($geoXML->lat,$geoXML->lon);
+    }
+
+
 //    createMeteo('48.692100', '6.187800');
 }
 
@@ -57,21 +63,23 @@ function createMeteo($lat, $lon){
     $coord = $lat . ',' . $lon;
 
     //recuperation de la meteo dans l'api
-    $meteo = file_get_contents('http://www.infoclimat.fr/public-api/gfs/xml?_ll='.$coord.'&_auth=ARsDFFIsBCZRfFtsD3lSe1Q8ADUPeVRzBHgFZgtuAH1UMQNgUTNcPlU5VClSfVZkUn8AYVxmVW0Eb1I2WylSLgFgA25SNwRuUT1bPw83UnlUeAB9DzFUcwR4BWMLYwBhVCkDb1EzXCBVOFQoUmNWZlJnAH9cfFVsBGRSPVs1UjEBZwNkUjIEYVE6WyYPIFJjVGUAZg9mVD4EbwVhCzMAMFQzA2JRMlw5VThUKFJiVmtSZQBpXGtVbwRlUjVbKVIuARsDFFIsBCZRfFtsD3lSe1QyAD4PZA%3D%3D&_c=19f3aa7d766b6ba91191c8be71dd1ab2');
+    if (!$meteo = file_get_contents('http://www.infoclimat.fr/public-api/gfs/xml?_ll='.$coord.'&_auth=ARsDFFIsBCZRfFtsD3lSe1Q8ADUPeVRzBHgFZgtuAH1UMQNgUTNcPlU5VClSfVZkUn8AYVxmVW0Eb1I2WylSLgFgA25SNwRuUT1bPw83UnlUeAB9DzFUcwR4BWMLYwBhVCkDb1EzXCBVOFQoUmNWZlJnAH9cfFVsBGRSPVs1UjEBZwNkUjIEYVE6WyYPIFJjVGUAZg9mVD4EbwVhCzMAMFQzA2JRMlw5VThUKFJiVmtSZQBpXGtVbwRlUjVbKVIuARsDFFIsBCZRfFtsD3lSe1QyAD4PZA%3D%3D&_c=19f3aa7d766b6ba91191c8be71dd1ab2')) {
+        echo file_get_contents("404.html");
+    } else {
+        //on convertit en XML le retour de la methode
+        $meteoXML = simplexml_load_string($meteo);
 
-    //on convertit en XMLle retour de la methode
-    $meteoXML = simplexml_load_string($meteo);
-
-    //on remplit le meteo.html pour le rendu grâce a une feuille xsl
-    $meteoXSL = new DOMDocument();
-    $meteoXSL->load('meteo/meteo.xsl');
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($meteoXSL);
-    file_put_contents('meteo/meteo.html',$proc->transformToXML($meteoXML));
-    createHeader();
-    createVelibs();
-    createMap($lat,$lon);
-    echo(file_get_contents('meteo/meteo.html'));
+        //on remplit le meteo.html pour le rendu grâce a une feuille xsl
+        $meteoXSL = new DOMDocument();
+        $meteoXSL->load('meteo/meteo.xsl');
+        $proc = new XSLTProcessor();
+        $proc->importStyleSheet($meteoXSL);
+        file_put_contents('meteo/meteo.html',$proc->transformToXML($meteoXML));
+        createHeader();
+        createVelibs();
+        createMap($lat,$lon);
+        echo(file_get_contents('meteo/meteo.html'));
+    }
 }
 
 function createVelibs(){
