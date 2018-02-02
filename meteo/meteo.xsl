@@ -57,7 +57,7 @@
     <xsl:template match="echeance/risque_neige">
         <xsl:choose>
             <xsl:when test=". = 'oui'">
-                <img src="../Interoperabilite/img/meteo/neige.png" class="meteo_img"/>
+                <img src="../InteroperabiliteProjectXML/img/meteo/neige.png" class="meteo_img"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="conseil">
